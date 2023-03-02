@@ -27,7 +27,7 @@ public class Client {
         } else if (line.startsWith("START")) {
           System.out.println(line);
           displayCards(in);
-          out.println("READY");
+          //out.println("READY");
         } else if (line.startsWith("SELECT")) {
           System.out.println(line);
           selectCard(out);
