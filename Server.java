@@ -22,7 +22,7 @@ public class Server {
       player.setSocket(socket);
       players.add(player);
       System.out.println("Player connected: " + player.getName());
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       out.println("WAIT Waiting for another player to connect...");
     }
@@ -46,7 +46,7 @@ public class Server {
         player.addToHand(card);
       }
       PrintWriter out = new PrintWriter(player.getSocket().getOutputStream(), true);
-      out.println("START Game starting...");
+      out.println("START Game starting...\n");
       out.println(player.getHand().size());
       for (Card card : player.getHand()) {
         out.println(card.getElement() + "," + card.getPowerNumber() + "," + card.getColor());
@@ -72,28 +72,53 @@ public class Server {
   private void playRound() throws Exception {
     Player currentPlayer = players.get(0);
     Player otherPlayer = players.get(1);
-    PrintWriter out = new PrintWriter(currentPlayer.getSocket().getOutputStream(), true);
-    BufferedReader in = new BufferedReader(new InputStreamReader(currentPlayer.getSocket().getInputStream()));
 
-    sendAndWait(out, "SELECT Select a card to play...");
-    String cardStr = in.readLine();
+    //Establish connections to clients input/outputs
+    PrintWriter outCurrent = new PrintWriter(currentPlayer.getSocket().getOutputStream(), true);
+    BufferedReader inCurrent = new BufferedReader(new InputStreamReader(currentPlayer.getSocket().getInputStream()));
+    
+    PrintWriter outOther = new PrintWriter(otherPlayer.getSocket().getOutputStream(), true);
+    BufferedReader inOther = new BufferedReader(new InputStreamReader(otherPlayer.getSocket().getInputStream()));
+
+    //Tell player 2 to wait and ask for player 1's card
+    sendAndWait(outOther, "READY Waiting for other player...");
+    sendAndWait(outCurrent, "SELECT Select a card to play...");
+    
+    //Wait till player 1 goes from ready to providing their card
+    String cardStr = inCurrent.readLine();
+    while (cardStr.equals("READY")) {
+      cardStr = inCurrent.readLine();
+    }
+    
+    sendAndWait(outOther, "SELECT Select a card to play...");
+
+    //Parse player 1's card and remove it
     Card currentCard = parseCardString(cardStr);
     currentPlayer.getHand().remove(currentCard);
 
-    out = new PrintWriter(otherPlayer.getSocket().getOutputStream(), true);
-    sendAndWait(out, "OTHER " + currentPlayer.getName() + " played a card.");
+    cardStr = inOther.readLine();
+    while (cardStr.equals("READY")) {
+      cardStr = inOther.readLine();
+    }
 
-    in = new BufferedReader(new InputStreamReader(otherPlayer.getSocket().getInputStream()));
-    cardStr = in.readLine();
+    //Parse player2's card and remove it
     Card otherCard = parseCardString(cardStr);
     otherPlayer.getHand().remove(otherCard);
 
     // Combat phase
     String result = determineRoundResult(currentCard, otherCard);
-    out = new PrintWriter(currentPlayer.getSocket().getOutputStream(), true);
-    out.println("COMBAT " + currentCard.getElement() + "," + currentCard.getPowerNumber() + "," + currentCard.getColor());
-    out.println(otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
-    out.println(result);
+
+    //Print output to Player1
+    outCurrent.println("COMBAT " + currentCard.getElement() + "," + currentCard.getPowerNumber() + "," + currentCard.getColor());
+    outCurrent.println(currentCard.getElement() + "," + currentCard.getPowerNumber() + "," + currentCard.getColor());
+    outCurrent.println(otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
+    outCurrent.println("RESULT " + result);
+
+    //Print output to Player2
+    outOther.println("COMBAT " + otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
+    outOther.println(otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
+    outOther.println(currentCard.getElement() + "," + currentCard.getPowerNumber() + "," + currentCard.getColor());
+    outOther.println("RESULT " + result);
 
     // Scoring phase
     if (gameOver()) {

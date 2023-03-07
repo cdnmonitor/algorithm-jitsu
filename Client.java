@@ -19,23 +19,31 @@ public class Client {
     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
     while (true) {
-      String line = in.readLine();
-      if (line.startsWith("WAIT")) {
-        System.out.println(line);
-        continue;
-      } else if (line.startsWith("START")) {
-        System.out.println(line);
-        displayCards(in);
-        out.println("READY");
-      } else if (line.startsWith("SELECT")) {
-        System.out.println(line);
-        selectCard(out);
-      } else if (line.startsWith("COMBAT")) {
-        System.out.println(line);
-        displayCombat(in);
-      } else if (line.startsWith("SCORE")) {
-        System.out.println(line);
-        break;
+      try {
+        String line = in.readLine();
+        if (line.startsWith("WAIT")) {
+          System.out.println(line);
+          continue;
+        } else if (line.startsWith("START")) {
+          line = in.readLine();
+          System.out.println(line);
+          displayCards(in);
+          out.println("READY");
+        } else if (line.startsWith("SELECT")) {
+          System.out.println(line);
+          selectCard(out);
+        } else if (line.startsWith("COMBAT")) {
+          System.out.println(line);
+          displayCombat(in);
+        } else if (line.startsWith("RESULT")) {
+          System.out.println(line);
+        } else if (line.startsWith("SCORE")) {
+          System.out.println(line);
+          break;
+        }
+      } catch (Exception e) {
+      System.out.println(e.getMessage());
+      break;
       }
     }
     socket.close();
