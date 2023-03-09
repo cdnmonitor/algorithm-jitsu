@@ -21,4 +21,3 @@ public class Card {
       return color;
     }
   }
-  
