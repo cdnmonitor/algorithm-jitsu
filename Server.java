@@ -148,9 +148,9 @@ public class Server {
         // winner="neither";
         result = "TIE";
       }
-    } else if ((currentCard.getElement().equals("Water") && otherCard.getElement().equals("Fire")) ||
-               (currentCard.getElement().equals("Fire") && otherCard.getElement().equals("Snow")) ||
-               (currentCard.getElement().equals("Snow") && otherCard.getElement().equals("Water"))) {
+    } else if ((currentCard.getElement().equals("water") && otherCard.getElement().equals("fire")) ||
+               (currentCard.getElement().equals("fire") && otherCard.getElement().equals("snow")) ||
+               (currentCard.getElement().equals("snow") && otherCard.getElement().equals("water"))) {
       result = "WIN";
       // winner="Player 1";
 
