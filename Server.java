@@ -1,9 +1,15 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -128,25 +134,44 @@ public class Server {
   // Combat phase
   private String determineRoundResult(Card currentCard, Card otherCard) {
     String result;
+    String winner=""; // "Player 1" or "Player 2"
     if (currentCard.getElement().equals(otherCard.getElement())) {
       if (currentCard.getPowerNumber() > otherCard.getPowerNumber()) {
         result = "WIN";
+        // winner="Player 1";
         players.get(0).addToWonCards(currentCard);
       } else if (currentCard.getPowerNumber() < otherCard.getPowerNumber()) {
         result = "LOSE";
+        // winner="Player 2";
         players.get(1).addToWonCards(otherCard);
       } else {
+        // winner="neither";
         result = "TIE";
       }
     } else if ((currentCard.getElement().equals("Water") && otherCard.getElement().equals("Fire")) ||
                (currentCard.getElement().equals("Fire") && otherCard.getElement().equals("Snow")) ||
                (currentCard.getElement().equals("Snow") && otherCard.getElement().equals("Water"))) {
       result = "WIN";
+      // winner="Player 1";
+
       players.get(0).addToWonCards(currentCard);
     } else {
       result = "LOSE";
+      // winner="Player 2";
       players.get(1).addToWonCards(otherCard);
     }
+    
+
+
+    if(result=="WIN"){
+      winner="Player 1";
+    } else if(result=="LOSE"){
+      winner="Player 2";
+    } else{
+      winner="neither";
+    }
+    log(winner,result,currentCard,otherCard);
+
     return result;
   }
 
@@ -176,7 +201,7 @@ public class Server {
     }
     return false;
   }
-
+  
   private void displayScore() throws Exception {
     int player1Score = players.get(0).getWonCards().size();
     int player2Score = players.get(1).getWonCards().size();
@@ -195,7 +220,7 @@ public class Server {
     out = new PrintWriter(players.get(1).getSocket().getOutputStream(), true);
     out.println("SCORE " + player2Score + " " + player1Score + " " + player1Cards);
   }
-
+  
   private Card parseCardString(String cardStr) {
     String[] cardInfo = cardStr.split(",");
     String element = cardInfo[0];
@@ -208,6 +233,50 @@ public class Server {
     out.println(message);
     out.println("WAIT Waiting for other player...");
   }
+  // There is an output log that is saved as a text file that reads something to the tune of 'Player 1 beat Player 2 with CARDID. 
+  // Player 2 played CARDID. The score is SCORE'. This log also appears in the console so we can troubleshoot better.
+
+  private void log(String winner, String result, Card p1, Card p2) {
+    String message="";
+
+    if(result!="TIE"){
+      message = winner + " beat " + (winner.equals("Player 1") ? "Player 2" : "Player 1");
+      if (winner.equals("Player 1")) {
+        message += " with " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". Player 2 played " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". ";
+      } else {
+        message += " with " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". Player 1 played " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". ";
+      }
+      message+= "The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
+      
+     
+    } else {
+      message = "TIE. Player 1 played " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". Player 2 played " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
+    }
+    // add timestamp in brackets to beginning of message
+    // message = "[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(0)) + "] " + message;
+
+    
+    try {
+      // get current date and time
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now();  
+      message = "[" + dtf.format(now) + "] " + message;
+
+     
+
+      System.out.println(message);
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+      out.println(message);
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+      
+  }
+   
+  
+  // console log
+
 
   public static void main(String[] args) {
     Server server = new Server();
