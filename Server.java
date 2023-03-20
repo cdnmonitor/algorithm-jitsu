@@ -35,6 +35,7 @@ public class Server {
 
     // Start of game
     System.out.println("Starting game...");
+    logStart();
     dealCards();
     while (!gameOver()) {
       playRound();
@@ -129,6 +130,7 @@ public class Server {
     // Scoring phase
     if (gameOver()) {
       displayScore();
+      logEnd();
     }
   }
   // Combat phase
@@ -238,32 +240,23 @@ public class Server {
 
   private void log(String winner, String result, Card p1, Card p2) {
     String message="";
-
     if(result!="TIE"){
       message = winner + " beat " + (winner.equals("Player 1") ? "Player 2" : "Player 1");
       if (winner.equals("Player 1")) {
-        message += " with " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". Player 2 played " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". ";
+        message += " with '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "', Player 2 played '" + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + "', ";
       } else {
-        message += " with " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". Player 1 played " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". ";
+        message += " with '" + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + "', Player 1 played '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "',";
       }
-      message+= "The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
-      
-     
     } else {
-      message = "TIE. Player 1 played " + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + ". Player 2 played " + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + ". The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
+      message = "TIE. Player 1 played '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "', Player 2 played '"+ p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor()+"";
     }
-    // add timestamp in brackets to beginning of message
-    // message = "[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(0)) + "] " + message;
+    message+= "The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
 
-    
     try {
       // get current date and time
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();  
       message = "[" + dtf.format(now) + "] " + message;
-
-     
-
       System.out.println(message);
       PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
       out.println(message);
@@ -272,6 +265,42 @@ public class Server {
       e.printStackTrace();
     }
       
+  }
+  private void logStart(){
+    try {
+      // get current date and time
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now();  
+      String message = "[" + dtf.format(now) + "] " + "GAME STARTED";
+      System.out.println(message);
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+      out.println(message);
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  private void logEnd(){
+    try {
+      int p1 = players.get(0).getWonCards().size();
+      int p2 = players.get(1).getWonCards().size();
+      String winner="";
+      if(p1>p2){
+        winner="Player 1";
+      } else if(p2>p1){
+        winner="Player 2";
+      }
+      // get current date and time
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now();  
+      String message = "[" + dtf.format(now) + "] " + "GAME END, "+ "WINNER: " + winner ;
+      System.out.println(message);
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+      out.println(message);
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
    
   
