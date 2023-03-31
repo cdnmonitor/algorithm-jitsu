@@ -139,32 +139,23 @@ public class Server {
     String winner=""; 
     if (currentCard.getElement().equals(otherCard.getElement())) {
       if (currentCard.getPowerNumber() > otherCard.getPowerNumber()) {
-        result = "WIN";
-       
+        result = "WIN";  
         players.get(0).addToWonCards(currentCard);
       } else if (currentCard.getPowerNumber() < otherCard.getPowerNumber()) {
-        result = "LOSE";
-        
+        result = "LOSE"; 
         players.get(1).addToWonCards(otherCard);
       } else {
-       
         result = "TIE";
       }
     } else if ((currentCard.getElement().equals("water") && otherCard.getElement().equals("fire")) ||
                (currentCard.getElement().equals("fire") && otherCard.getElement().equals("snow")) ||
                (currentCard.getElement().equals("snow") && otherCard.getElement().equals("water"))) {
       result = "WIN";
-     
-
       players.get(0).addToWonCards(currentCard);
     } else {
       result = "LOSE";
-  
       players.get(1).addToWonCards(otherCard);
     }
-    
-
-
     if(result=="WIN"){
       winner="Player 1";
     } else if(result=="LOSE"){
@@ -173,10 +164,8 @@ public class Server {
       winner="neither player";
     }
     log(winner,result,currentCard,otherCard);
-
     return result;
   }
-
   // Scoring phase
   private boolean gameOver() {
     HashSet<String> elements = new HashSet<>();
@@ -268,7 +257,6 @@ public class Server {
   }
   private void logStart(){
     try {
-      // get current date and time
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();  
       String message = "[" + dtf.format(now) + "] " + "GAME STARTED";
@@ -290,7 +278,6 @@ public class Server {
       } else if(p2>p1){
         winner="Player 2";
       }
-      // get current date and time
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();  
       String message = "[" + dtf.format(now) + "] " + "GAME END, "+ "WINNER: " + winner ;
@@ -303,8 +290,6 @@ public class Server {
     }
   }
    
-  
-  // console log
 
 
   public static void main(String[] args) {
