@@ -136,30 +136,30 @@ public class Server {
   // Combat phase
   private String determineRoundResult(Card currentCard, Card otherCard) {
     String result;
-    String winner=""; // "Player 1" or "Player 2"
+    String winner=""; 
     if (currentCard.getElement().equals(otherCard.getElement())) {
       if (currentCard.getPowerNumber() > otherCard.getPowerNumber()) {
         result = "WIN";
-        // winner="Player 1";
+       
         players.get(0).addToWonCards(currentCard);
       } else if (currentCard.getPowerNumber() < otherCard.getPowerNumber()) {
         result = "LOSE";
-        // winner="Player 2";
+        
         players.get(1).addToWonCards(otherCard);
       } else {
-        // winner="neither";
+       
         result = "TIE";
       }
     } else if ((currentCard.getElement().equals("water") && otherCard.getElement().equals("fire")) ||
                (currentCard.getElement().equals("fire") && otherCard.getElement().equals("snow")) ||
                (currentCard.getElement().equals("snow") && otherCard.getElement().equals("water"))) {
       result = "WIN";
-      // winner="Player 1";
+     
 
       players.get(0).addToWonCards(currentCard);
     } else {
       result = "LOSE";
-      // winner="Player 2";
+  
       players.get(1).addToWonCards(otherCard);
     }
     
@@ -170,7 +170,7 @@ public class Server {
     } else if(result=="LOSE"){
       winner="Player 2";
     } else{
-      winner="neither";
+      winner="neither player";
     }
     log(winner,result,currentCard,otherCard);
 
