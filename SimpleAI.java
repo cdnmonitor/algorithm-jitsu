@@ -2,17 +2,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.Random;
 
-public class Client {
+public class SimpleAI {
   private String serverAddress;
-  private Scanner scanner = new Scanner(System.in);
+  private String[] cards = new String[5];
 
-  public Client(String serverAddress) {
+  public SimpleAI(String serverAddress) {
     this.serverAddress = serverAddress;
   }
 
-  public void play() throws Exception {
+  public void playAI() throws Exception {
     Socket socket = new Socket(serverAddress, 58901);
     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -25,19 +25,17 @@ public class Client {
           continue;
         } else if (line.startsWith("START")) {
           line = in.readLine();
-          System.out.println(line);
-          displayCards(in);
+          readCards(in);
           out.println("READY");
         } else if (line.startsWith("SELECT")) {
           System.out.println(line);
+          out.println("READY");
           selectCard(out);
         } else if (line.startsWith("COMBAT")) {
           System.out.println(line);
           displayCombat(in);
         } else if (line.startsWith("RESULT")) {
           System.out.println(line);
-        } else if (line.startsWith("CARDS")){
-          displayCards(in);
         } else if (line.startsWith("SCORE")) {
           System.out.println(line);
           break;
@@ -50,18 +48,21 @@ public class Client {
     socket.close();
   }
 
-  private void displayCards(BufferedReader in) throws Exception {
+  private void readCards(BufferedReader in) throws Exception {
     int numCards = Integer.parseInt(in.readLine());
     System.out.println("Your cards are:");
     for (int i = 0; i < numCards; i++) {
-      System.out.println(in.readLine());
+      String cardString = in.readLine();
+      System.out.println("AI:" + cardString);
+      cards[i] = cardString;
     }
   }
 
   private void selectCard(PrintWriter out) {
-    System.out.print("Select a card: ");
-    String card = scanner.nextLine();
-    out.println(card);
+    Random generator = new Random();
+    int cardChoice = generator.nextInt(cards.length);
+    System.out.println("The card is" + cards[cardChoice]);
+    out.println(cards[cardChoice]);
   }
 
   private void displayCombat(BufferedReader in) throws Exception {
@@ -72,7 +73,7 @@ public class Client {
   }
 
   public static void main(String[] args) throws Exception {
-    Client client = new Client("localhost");
-    client.play();
+    SimpleAI simpleAI = new SimpleAI("localhost");
+    simpleAI.playAI();
   }
 }

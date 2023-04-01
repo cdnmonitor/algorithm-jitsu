@@ -67,14 +67,24 @@ public class Server {
     String line;
     while ((line = reader.readLine()) != null) {
       String[] cardInfo = line.split(",");
-      String element = cardInfo[0];
-      int powerNumber = Integer.parseInt(cardInfo[1]);
-      String color = cardInfo[2];
+      String element = cardInfo[0].strip();
+      int powerNumber = Integer.parseInt(cardInfo[1].strip());
+      String color = cardInfo[2].strip();
       Card card = new Card(element, powerNumber, color);
       deck.add(card);
     }
     reader.close();
     return deck;
+  }
+
+  private Boolean removeCard(Player player, Card card) {
+    for (Card c : player.getHand()) {
+      if(card.equals(c)){
+        player.getHand().remove(c);
+        return true;
+      }
+    }
+    return false;
   }
   private void playRound() throws Exception {
     Player currentPlayer = players.get(0);
@@ -95,22 +105,28 @@ public class Server {
     String cardStr = inCurrent.readLine();
     while (cardStr.equals("READY")) {
       cardStr = inCurrent.readLine();
+      System.out.println("String" + cardStr);
     }
     
     sendAndWait(outOther, "SELECT Select a card to play...");
 
     //Parse player 1's card and remove it
     Card currentCard = parseCardString(cardStr);
-    currentPlayer.getHand().remove(currentCard);
+    
+    // Remove Played Card From player1 deck
+    removeCard(currentPlayer, currentCard);
 
     cardStr = inOther.readLine();
     while (cardStr.equals("READY")) {
       cardStr = inOther.readLine();
+      System.out.println("String" + cardStr);
     }
 
     //Parse player2's card and remove it
     Card otherCard = parseCardString(cardStr);
-    otherPlayer.getHand().remove(otherCard);
+
+    //Remove Played Card From player2 deck
+    removeCard(otherPlayer, otherCard);
 
     // Combat phase
     String result = determineRoundResult(currentCard, otherCard);
@@ -121,6 +137,12 @@ public class Server {
     outCurrent.println(otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
     outCurrent.println("RESULT " + result);
 
+    //Change Result so that it refelcts other players point of view.
+    if (result.equals("WIN")) {
+      result = "LOSE";
+    } else if (result.equals("LOSE")) {
+      result = "WIN";
+    }
     //Print output to Player2
     outOther.println("COMBAT " + otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
     outOther.println(otherCard.getElement() + "," + otherCard.getPowerNumber() + "," + otherCard.getColor());
@@ -132,7 +154,16 @@ public class Server {
       displayScore();
       logEnd();
     }
+    for (Player player : players) {
+      PrintWriter out = new PrintWriter(player.getSocket().getOutputStream(), true);
+      out.println("CARDS Displaying Hand...");
+      out.println(player.getHand().size());
+      for (Card card : player.getHand()) {
+        out.println(card.getElement() + "," + card.getPowerNumber() + "," + card.getColor());
+      }
+    }
   }
+
   // Combat phase
   private String determineRoundResult(Card currentCard, Card otherCard) {
     String result;
@@ -190,6 +221,11 @@ public class Server {
         return true;
       }
     }
+    for (Player player : players) {
+      if (player.getHand().size() <= 0) {
+        return true;
+      }
+    }
     return false;
   }
   
@@ -214,9 +250,9 @@ public class Server {
   
   private Card parseCardString(String cardStr) {
     String[] cardInfo = cardStr.split(",");
-    String element = cardInfo[0];
-    int powerNumber = Integer.parseInt(cardInfo[1]);
-    String color = cardInfo[2];
+    String element = cardInfo[0].strip();
+    int powerNumber = Integer.parseInt(cardInfo[1].strip());
+    String color = cardInfo[2].strip();
     return new Card(element, powerNumber, color);
   }
 
