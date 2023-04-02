@@ -22,6 +22,7 @@ Detailed documentation for the project can be found [here](https://loud-battery-
     java Server
     java Client
     java SimpleAI
+```
 6. Follow the prompts in the client terminals to play the game
 <!-- to do list -->
 
