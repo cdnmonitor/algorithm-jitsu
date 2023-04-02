@@ -105,7 +105,6 @@ public class Server {
     String cardStr = inCurrent.readLine();
     while (cardStr.equals("READY")) {
       cardStr = inCurrent.readLine();
-      System.out.println("String" + cardStr);
     }
     
     sendAndWait(outOther, "SELECT Select a card to play...");
@@ -119,7 +118,6 @@ public class Server {
     cardStr = inOther.readLine();
     while (cardStr.equals("READY")) {
       cardStr = inOther.readLine();
-      System.out.println("String" + cardStr);
     }
 
     //Parse player2's card and remove it
@@ -273,7 +271,7 @@ public class Server {
         message += " with '" + p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor() + "', Player 1 played '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "',";
       }
     } else {
-      message = "TIE. Player 1 played '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "', Player 2 played '"+ p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor()+"";
+      message = "TIE. Player 1 played '" + p1.getElement() + "," + p1.getPowerNumber() + "," + p1.getColor() + "', Player 2 played '"+ p2.getElement() + "," + p2.getPowerNumber() + "," + p2.getColor()+"'";
     }
     message+= "The score is " + players.get(0).getWonCards().size() + " to " + players.get(1).getWonCards().size() + ".";
 

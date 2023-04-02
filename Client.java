@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Client {
   private String serverAddress;
   private Scanner scanner = new Scanner(System.in);
+  private String[] cardStrings = new String[5];
 
   public Client(String serverAddress) {
     this.serverAddress = serverAddress;
@@ -30,7 +31,11 @@ public class Client {
           out.println("READY");
         } else if (line.startsWith("SELECT")) {
           System.out.println(line);
-          selectCard(out);
+          String cardString = selectCard();
+          while (cardString.equals("")) {
+            cardString = selectCard();
+          }
+          out.println(cardString);
         } else if (line.startsWith("COMBAT")) {
           System.out.println(line);
           displayCombat(in);
@@ -54,14 +59,22 @@ public class Client {
     int numCards = Integer.parseInt(in.readLine());
     System.out.println("Your cards are:");
     for (int i = 0; i < numCards; i++) {
-      System.out.println(in.readLine());
+      String line = in.readLine();
+      cardStrings[i] = line;
+      System.out.println(line);
     }
   }
 
-  private void selectCard(PrintWriter out) {
+  private String selectCard() {
     System.out.print("Select a card: ");
     String card = scanner.nextLine();
-    out.println(card);
+    for (String c : cardStrings) {
+      if (c.equals(card)) {
+        return card;
+      }
+    }
+    System.out.println("Please play a card that is in your deck!");
+    return "";
   }
 
   private void displayCombat(BufferedReader in) throws Exception {
