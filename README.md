@@ -17,7 +17,12 @@ Detailed documentation for the project can be found [here](https://loud-battery-
     java Client
     java Client
 ```
-5. Follow the prompts in the client terminals to play the game
+5. Play against the computer by running the following
+```bash
+    java Server
+    java Client
+    java SimpleAI
+6. Follow the prompts in the client terminals to play the game
 <!-- to do list -->
 
 
@@ -39,11 +44,12 @@ Detailed documentation for the project can be found [here](https://loud-battery-
 ## Client Features
 - [x] Client can connect to server
 - [x] Client can display cards to player
-- [x] Client can play cards
+- [x] Client can only play cards in their hand
+- [ ] Client can end the game at any time
 
 ## Algorithm Features
 ### Algorithm ToDos
-- [ ] "Easy Mode" AI implemented, plays random cards
+- [x] "Easy Mode" AI implemented, plays random cards
 - [ ] Algorithm can be trained using logs
 
 
