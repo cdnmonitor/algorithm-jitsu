@@ -47,6 +47,8 @@ Detailed documentation for the project can be found [here](https://loud-battery-
 - [x] Client can display cards to player
 - [x] Client can only play cards in their hand
 - [ ] Client can end the game at any time
+- [ ] Client can pick cards with [1-5] instead of typing whole card.
+- [ ] Client can opt in to tutorial.
 
 ## Algorithm Features
 ### Algorithm ToDos
