@@ -50,7 +50,7 @@ public class Server {
   private void dealCards() throws Exception {
     
     ArrayList<Card> deck = readDeckFromFile();
-    // Collections.shuffle(deck);
+    Collections.shuffle(deck);
     for (Player player : players) {
       for (int i = 0; i < 5; i++) {
         Card card = deck.remove(0);
