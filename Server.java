@@ -18,6 +18,9 @@ public class Server {
   private static final int PORT = 58901;
   private ArrayList<Player> players = new ArrayList<>();
 
+  //stores the deck of cards the players pull from
+  private ArrayList<Card> remainingDeck = new ArrayList<>();
+
   public void start() throws Exception {
     ServerSocket serverSocket = new ServerSocket(PORT);
     System.out.println("Waiting for players...");
@@ -45,11 +48,13 @@ public class Server {
     serverSocket.close();
   }
   private void dealCards() throws Exception {
+    
     ArrayList<Card> deck = readDeckFromFile();
     Collections.shuffle(deck);
     for (Player player : players) {
       for (int i = 0; i < 5; i++) {
         Card card = deck.remove(0);
+        remainingDeck=deck;
         player.addToHand(card);
       }
       PrintWriter out = new PrintWriter(player.getSocket().getOutputStream(), true);
@@ -59,6 +64,14 @@ public class Server {
         out.println(card.getElement() + "," + card.getPowerNumber() + "," + card.getColor());
       }
     }
+  }
+  private void pullFromDeck(Player p){
+    if(remainingDeck.size()==0){
+      return;
+    }
+    Card toAdd=remainingDeck.remove(0);
+    p.addToHand(toAdd);
+
   }
 
   private ArrayList<Card> readDeckFromFile() throws Exception {
@@ -86,6 +99,7 @@ public class Server {
     }
     return false;
   }
+
   private void playRound() throws Exception {
     Player currentPlayer = players.get(0);
     Player otherPlayer = players.get(1);
@@ -114,6 +128,7 @@ public class Server {
     
     // Remove Played Card From player1 deck
     removeCard(currentPlayer, currentCard);
+    pullFromDeck(currentPlayer);
 
     cardStr = inOther.readLine();
     while (cardStr.equals("READY")) {
@@ -125,6 +140,7 @@ public class Server {
 
     //Remove Played Card From player2 deck
     removeCard(otherPlayer, otherCard);
+    pullFromDeck(otherPlayer);
 
     // Combat phase
     String result = determineRoundResult(currentCard, otherCard);
