@@ -74,7 +74,7 @@ public class SimpleAI {
 
     public static void main(String[] args) throws Exception {
         // Replace this part with user input to choose the difficulty level
-        DifficultyAlgorithm difficultyAlgorithm = new EasyAlgorithm();
+        DifficultyAlgorithm difficultyAlgorithm = new MediumAlgorithm();
 
         SimpleAI simpleAI = new SimpleAI("localhost", difficultyAlgorithm);
         simpleAI.playAI();
