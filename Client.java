@@ -61,17 +61,22 @@ public class Client {
     for (int i = 0; i < numCards; i++) {
       String line = in.readLine();
       cardStrings[i] = line;
-      System.out.println(line);
+      System.out.println(i + ": " + line);
     }
   }
 
   private String selectCard() {
-    System.out.print("Select a card: ");
-    String card = scanner.nextLine();
-    for (String c : cardStrings) {
-      if (c.equals(card)) {
-        return card;
+    System.out.print("Select a card (Number Only): ");
+    String cardNumberString = scanner.nextLine();
+    try {
+      int cardNumber = Integer.parseInt(cardNumberString);
+      for (int i = 0; i < 5; i++) {
+        if (i == cardNumber) {
+          return cardStrings[i];
+        }
       }
+    } catch (Exception e) {
+      System.out.println("Please Enter a Number From 0 to 4");
     }
     System.out.println("Please play a card that is in your deck!");
     return "";
