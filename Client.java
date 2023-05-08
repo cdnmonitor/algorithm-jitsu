@@ -8,6 +8,10 @@ public class Client {
   private String serverAddress;
   private Scanner scanner = new Scanner(System.in);
   private String[] cardStrings = new String[5];
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
 
   public Client(String serverAddress) {
     this.serverAddress = serverAddress;
@@ -40,7 +44,7 @@ public class Client {
           System.out.println(line);
           displayCombat(in);
         } else if (line.startsWith("RESULT")) {
-          System.out.println(line);
+          printColor(line);
         } else if (line.startsWith("CARDS")){
           displayCards(in);
         } else if (line.startsWith("SCORE")) {
@@ -81,6 +85,18 @@ public class Client {
     System.out.println("Please play a card that is in your deck!");
     return "";
   }
+
+  private void printColor(String message) {
+        if (message.contains("WIN")) {
+            System.out.println(ANSI_GREEN + message + ANSI_RESET);
+        } else if (message.contains("LOSE")) {
+            System.out.println(ANSI_RED + message + ANSI_RESET);
+        } else if (message.contains("TIE")) {
+            System.out.println(ANSI_YELLOW + message + ANSI_RESET);
+        } else {
+            System.out.println(message);
+        }
+    }
 
   private void displayCombat(BufferedReader in) throws Exception {
     String yourCard = in.readLine();

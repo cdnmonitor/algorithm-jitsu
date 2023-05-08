@@ -9,6 +9,10 @@ public class SimpleAI {
     private String serverAddress;
     private String[] cards = new String[5];
     private DifficultyAlgorithm difficultyAlgorithm;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
 
     public SimpleAI(String serverAddress, DifficultyAlgorithm difficultyAlgorithm) {
         this.serverAddress = serverAddress;
@@ -38,7 +42,7 @@ public class SimpleAI {
                     System.out.println(line);
                     displayCombat(in);
                 } else if (line.startsWith("RESULT")) {
-                    System.out.println(line);
+                    printColor(line);
                 } else if (line.startsWith("CARDS")){
                     readCards(in);
                 } else if (line.startsWith("SCORE")) {
@@ -51,6 +55,18 @@ public class SimpleAI {
             }
         }
         socket.close();
+    }
+
+    private void printColor(String message) {
+        if (message.contains("WIN")) {
+            System.out.println(ANSI_GREEN + message + ANSI_RESET);
+        } else if (message.contains("LOSE")) {
+            System.out.println(ANSI_RED + message + ANSI_RESET);
+        } else if (message.contains("TIE")) {
+            System.out.println(ANSI_YELLOW + message + ANSI_RESET);
+        } else {
+            System.out.println(message);
+        }
     }
 
     private void readCards(BufferedReader in) throws Exception {
