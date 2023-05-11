@@ -11,20 +11,31 @@ Detailed documentation for the project can be found [here](https://loud-battery-
 ```bash
     javac *.java
  ```
- 4. Run the following commands in separate terminals
+## To play against another human player
+ Run the following commands in separate terminals
  ```bash
     java Server
     java Client
     java Client
 ```
-5. Play against the computer by running the following
+Follow the prompts in the terminal to play the game
+## To play against AI
+1. Play against the computer by running the following
 ```bash
     java Server
     java Client
     java SimpleAI
 ```
-6. Follow the prompts in the client terminals to play the game
-<!-- to do list -->
+2. Select AI difficulty in the corresponding terminal window
+### Experimental feature for macOS users. 
+If you are running macOS, you can try using the zsh shell script to run the game against AI rather than opening 3 separate terminal windows. Make sure you are using zsh, and that you are using the default terminal app. Run the following command in the root directory of the project
+```bash
+    ./runAIGameMAC.sh
+```
+(this may cause errors if there are multiple terminal windows open)
+
+
+
 
 
 
@@ -39,20 +50,22 @@ Detailed documentation for the project can be found [here](https://loud-battery-
 - [x] Server implements game logic
 - [x] Server logs game beginning, end, and round outcomes. 
 ### Server ToDos 
-- [ ] Server implements AI algorithm for 2nd player
-- [ ] Server prompts player 1 to choose between AI and human player
+- [x] Server implements AI algorithm for 2nd player
+- [x] Server prompts player 1 to choose between AI and human player
 
 ## Client Features
 - [x] Client can connect to server
 - [x] Client can display cards to player
 - [x] Client can only play cards in their hand
 - [ ] Client can end the game at any time
-- [ ] Client can pick cards with [1-5] instead of typing whole card.
+- [x] Client can pick cards with [1-5] instead of typing whole card.
 - [ ] Client can opt in to tutorial.
 
 ## Algorithm Features
 ### Algorithm ToDos
 - [x] "Easy Mode" AI implemented, plays random cards
+- [x] "Medium Mode" AI implemented
+- [x] "Hard Mode" AI implemented
 - [ ] Algorithm can be trained using logs
 
 
