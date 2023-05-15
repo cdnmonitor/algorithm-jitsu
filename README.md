@@ -42,8 +42,9 @@ If you are running macOS, you can try using the zsh shell script to run the game
 
 
 
-# Feature Progress
+# Feature Progress 
 
+## Adding some of the unmarked features would be a great way to expand this project!
 ## Server Features
 - [x] Server can start and end game
 - [x] Server can handle 2 clients
