@@ -4,7 +4,7 @@ This goal of this project is to create a command line implementation of the [Clu
 # Class Structure:
 ![Class Diagram](https://github.com/cdnmonitor/algorithm-jitsu/blob/main/ClassDiagram.png)  
 
-The main classes are Server.java, Client.java, and SimpleAI.java. Server.java connects to two Clients, either of which can be a human (Client.java) or an AI(SimpleAI.java). The Server class handles all the game logic, dealing cards, getting cards from players, calculating who wins the round etc. Client.java communicates with the server to display a human player with relevent information to pick cards. SimpleAI.java allows a user to choose between 3 levels of AI difficulty, and adding a new difficulty is as easy as creating a class that extends the interface exposed by DifficultyAlgorithm.java.
+The important classes are Server.java, Client.java, and SimpleAI.java. Server.java connects to two Clients, either of which can be a human (Client.java) or an AI(SimpleAI.java). The Server class handles all the game logic, dealing cards, getting cards from players, calculating who wins the round etc. Client.java communicates with the server to display a human player with relevent information to pick cards. SimpleAI.java allows a user to choose between 3 levels of AI difficulty, and adding a new difficulty is as easy as creating a class that extends the interface exposed by DifficultyAlgorithm.java.
 
 # To Run
 1. Clone the repository
