@@ -3,6 +3,7 @@ This goal of this project is to create a command line implementation of the [Clu
 
 # Documentation
 Detailed documentation for the project can be found [here](https://loud-battery-5c3.notion.site/Card-Jitsu-Automata-394c48ba19ce45ea9993e6cc75747b9c)
+Class Diagram:
 ![Class Diagram](https://github.com/cdnmonitor/algorithm-jitsu/blob/main/ClassDiagram.png)
 
 # To Run
