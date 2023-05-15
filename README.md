@@ -1,6 +1,17 @@
 # Algorithm Jitsu
 This goal of this project is to create a command line implementation of the [Club Pengin Card Jitsu](https://clubpenguin.fandom.com/wiki/Card-Jitsu) card game written in Java. As children, we grew up playing ClubPenguin which heavily inspired us to recreate the game for the purpose of testing algorithms in a player vs player setting. The game is played between two clients (players) that communicate with a server using network sockets. Logs of every battle will be kept so that we can train an AI to play against the human player. The game will implement AI algorithms with varying difficulty. This project is being developed by [Michael Bishai](https://github.com/cdnmonitor),[Jack Donnely](https://github.com/LeonTheMouse), and [Max Pugh](https://github.com/mpughcs)
 
+# Table of Contents
+- [Class Structure:](#class-structure)
+- [To Run](#to-run)
+  - [To play against another human player](#to-play-against-another-human-player)
+  - [To play against AI](#to-play-against-ai)
+    - [Experimental feature for macOS users.](#experimental-feature-for-macos-users)
+- [Work Division](#work-division)
+- [Feature Progress](#feature-progress)
+  - [Server Features](#server-features)
+  - [Client Features](#client-features)
+  - [Algorithm Features](#algorithm-features)
 # Class Structure:
 ![Class Diagram](https://github.com/cdnmonitor/algorithm-jitsu/blob/main/ClassDiagram.png)  
 
@@ -35,6 +46,21 @@ If you are running macOS, you can try using the zsh shell script to run the game
     ./runAIGameMAC.sh
 ```
 (this may cause errors if there are multiple terminal windows open)
+
+
+
+# Work Division
+Michael: Server, Client, Player classes, DifficultyAlgorithm.java Interface, HardAlgorithm.java and MediumAlgorithm.java, Debugging
+
+Jack: AI interface implementation, SimpleAI.java, EasyAlgorithm.java,Index based card selection,
+Difficulty selection,
+Game logic bug fixes,
+debugging
+
+Max:Log System implementation, polishing Mechanics (Cards pulled from deck after playing. 
+Update and store deck state),
+MediumAlgorithm.java, HardAlgorithm.java,Shell Scripts,
+debugging
 
 
 
