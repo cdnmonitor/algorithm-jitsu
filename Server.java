@@ -219,9 +219,6 @@ public class Server {
         elements.add(card.getElement() + "," + card.getColor());
       }
     }
-    if (elements.size() >= 3) {
-      return true;
-    }
     for (String element : elements) {
       int count = 0;
       for (Player player : players) {
