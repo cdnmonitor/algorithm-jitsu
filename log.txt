@@ -1,2 +1,0 @@
-[2023/04/18 13:41:01] GAME STARTED
-[2023/04/18 13:41:13] Player 1 beat Player 2 with 'fire,7,green', Player 2 played 'fire,5,green', The score is 1 to 0.
