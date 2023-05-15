@@ -1,8 +1,9 @@
 # Algorithm Jitsu
 This goal of this project is to create a command line implementation of the [Club Pengin Card Jitsu](https://clubpenguin.fandom.com/wiki/Card-Jitsu) card game written in Java. As children, we grew up playing ClubPenguin which heavily inspired us to recreate the game for the purpose of testing algorithms in a player vs player setting. The game is played between two clients (players) that communicate with a server using network sockets. Logs of every battle will be kept so that we can train an AI to play against the human player. The game will implement AI algorithms with varying difficulty. This project is being developed by [Michael Bishai](https://github.com/cdnmonitor),[Jack Donnely](https://github.com/LeonTheMouse), and [Max Pugh](https://github.com/mpughcs)
 
-# Documentation:
+# Class Structure:
 ![Class Diagram](https://github.com/cdnmonitor/algorithm-jitsu/blob/main/ClassDiagram.png)
+The main classes are Server.java, Client.java, and SimpleAI.java. Server.java connects to two Clients, either of which can be a human (Client.java) or an AI(SimpleAI.java). The Server class handles all the game logic, dealing cards, getting cards from players, calculating who wins the round etc. Client.java communicates with the server to display a human player with relevent information to pick cards. SimpleAI.java allows a user to choose between 3 levels of AI difficulty, and adding a new difficulty is as easy as creating a class that extends the interface exposed by DifficultyAlgorithm.java.
 
 # To Run
 1. Clone the repository
